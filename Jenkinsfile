@@ -5,6 +5,7 @@ pipeline{
     agent any
     tools {
         maven 'maven-362'
+        nodejs "node13"
     }
     stages{
         stage('Git Clone'){
@@ -18,6 +19,31 @@ pipeline{
         sh "mvn clean"
         }
     }
+
+      
+    	stage ('Clean') {
+		    steps {
+            	sh "rm -rf build"
+            }
+		}        
+        stage('Install') { 
+            steps {
+                sh "npm i"
+            }
+        }
+        stage ('Test') {
+		    steps {
+                sh "npm test"
+            }
+		}
+
+           stage ('npm Build') {
+		    steps {
+            	sh "(npm run build || true)"
+            }
+		}
+
+
     stage('Maven build'){
          steps{
         sh "mvn package"
