@@ -1,71 +1,95 @@
 #!/usr/bin/env groovy
 
+node {
+    stage("Git clone"){
+	git credentialsId: 'GIT_CREDENTIALS', url: 'https://github.com/neekr01/microservicegateway.git'
+    }
 
-pipeline{
-    agent any
-    tools {
-        maven 'maven-362'
-        nodejs "node13"
+    stage("Maven Clean, Build, Docker Push for UI"){
+
+    sh "./mvnw -ntp -Pprod verify jib:dockerBuild"
+
+    sh "docker image tag microservicegateway gcr.io/payment-platform-204588/microservicegateway"
+	sh "docker push gcr.io/payment-platform-204588/microservicegateway"
+	
+    }    
+
+    stage("Deploy"){
+	sh "gcloud container clusters get-credentials kube-cluster --zone us-central1-a --project payment-platform-204588"
+	sh "sh kubectl-apply.sh && cd .."
     }
-    stages{
-        stage('Git Clone'){
-        steps{
-            git credentialsId: 'GIT_CREDENTIALS', url: 'https://github.com/neekr01/microservicegateway.git'
-        }
-    }
+}
+
+
+
+
+// pipeline{
+//     agent any
+//     tools {
+//         maven 'maven-362'
+//         nodejs "node13"
+//     }
+//     stages{
+//         stage('Git Clone'){
+//         steps{
+//             git credentialsId: 'GIT_CREDENTIALS', url: 'https://github.com/neekr01/microservicegateway.git'
+//         }
+//     }
     
-    stage('Maven clean'){
-        steps{
-        sh "mvn clean"
-        }
-    }
+//     stage('Maven clean'){
+//         steps{
+//         sh "mvn clean"
+//         }
+//     }
 
       
-    	stage ('Clean') {
-		    steps {
-            	sh "rm -rf build"
-            }
-		}        
-        stage('Install') { 
-            steps {
-                sh "npm i"
-            }
-        }
-        stage ('Test') {
-		    steps {
-                sh "npm test"
-            }
-		}
+//     	stage ('Clean') {
+// 		    steps {
+//             	sh "rm -rf build"
+//             }
+// 		}        
+//         stage('Install') { 
+//             steps {
+//                 sh "npm i"
+//             }
+//         }
+//         stage ('Test') {
+// 		    steps {
+//                 sh "npm test"
+//             }
+// 		}
 
-           stage ('npm Build') {
-		    steps {
-            	sh "(npm run build || true)"
-            }
-		}
+//            stage ('npm Build') {
+// 		    steps {
+//             	sh "(npm run build || true)"
+//             }
+// 		}
 
 
-    stage('Maven build'){
-         steps{
-        sh "mvn package"
-    }
-    }
+//     stage('Maven build'){
+//          steps{
+//         sh "mvn package"
+//     }
+//     }
 
-    stage('Docker Image'){
-        steps{
-        sh "docker build -t neekr01/microservicegateway ."
-        }
-    }
+//     stage('Docker Image'){
+//         steps{
+//         sh "docker build -t neekr01/microservicegateway ."
+//         }
+//     }
 
-     stage('Docker Push'){
-         steps{
-    withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'DOCKER_HUB_CREDENTIALS')]) {
-   sh "docker login -u neekr01 -p ${DOCKER_HUB_CREDENTIALS}"
-}
-        sh "docker push neekr01/microservicegateway "
-        }
-    }
- }  
-}
+//      stage('Docker Push'){
+//          steps{
+//     withCredentials([string(credentialsId: 'DOCKER_HUB_CREDENTIALS', variable: 'DOCKER_HUB_CREDENTIALS')]) {
+//    sh "docker login -u neekr01 -p ${DOCKER_HUB_CREDENTIALS}"
+// }
+//         sh "docker push neekr01/microservicegateway "
+//         }
+//     }
+//  }  
+// }
+
+
 
 // node {
 //     stage('checkout') {

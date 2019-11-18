@@ -34,6 +34,19 @@
     "dtoSuffix": "DTO",
     "otherModules": [],
     "enableTranslation": false,
-    "blueprints": []
+    "blueprints": [],
+    "appsFolders": [
+      "microservicegateway"
+    ],
+    "directoryPath": "../",
+    "clusteredDbApps": [
+      "microservicegateway"
+    ],
+    "dockerRepositoryName": "dockerrepo",
+    "dockerPushCommand": "docker push",
+    "kubernetesNamespace": "microservicegateway",
+    "ingressDomain": "microservicegateway.com",
+    "monitoring": "elk",
+    "istio": true
   }
 }

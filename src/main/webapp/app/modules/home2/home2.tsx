@@ -6,19 +6,19 @@ const defaultValues = {
 };
 
 
-class home2 extends Component {
+class Home2 extends Component {
     state = { ...defaultValues }
 
 tfchangeHandler=(evt)=>{
-    let {name, value}=evt.target;
+    const {name, value}=evt.target;
     this.setState({[name]:value});
 }
 
 submitHandler = (evt) => {
     evt.preventDefault();
 // console.log({...defaultValues});
-console.log(defaultValues.recipient);
-console.log(defaultValues.amount);
+// console.log(defaultValues.recipient);
+// console.log(defaultValues.amount);
 
     this.setState({...defaultValues});
     
@@ -80,4 +80,4 @@ console.log(defaultValues.amount);
     }
 }
 
-export default home2;
+export default Home2;

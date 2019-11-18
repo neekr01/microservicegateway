@@ -16,7 +16,7 @@ export const Home = (props: IHomeProp) => {
   return (    
     <Row>
       <Col md="9">
-        <h2>Welcome to Marcus</h2>
+        <h2>Welcome to Paybiz</h2>
         <p className="lead">This is your homepage</p>
         {account && account.login ? (
           <div>
@@ -73,8 +73,8 @@ export const Home = (props: IHomeProp) => {
           </li>
 
          <li>
-            <a href="http://10.0.75.1:1001/" target="_blank" rel="noopener noreferrer">
-              Let's move to microservice11234
+            <a href="http://youtube.com" target="_blank" rel="noopener noreferrer">
+              Lets move to microservice11234
             </a>
           </li>
 
