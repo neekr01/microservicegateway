@@ -7,7 +7,7 @@ node {
 
     stage("Maven Clean, Build, Docker Push for UI"){
 
-    sh "./mvnw -ntp -Pprod verify jib:dockerBuild"
+    sh "chmod +x mvnw && ./mvnw -ntp -Pprod verify jib:dockerBuild"
 
     sh "docker image tag microservicegateway gcr.io/payment-platform-204588/microservicegateway"
 	sh "docker push gcr.io/payment-platform-204588/microservicegateway"
