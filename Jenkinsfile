@@ -16,7 +16,7 @@ node {
 
     stage("Deploy"){
 	sh "gcloud container clusters get-credentials kube-cluster --zone us-central1-a --project payment-platform-204588"
-	sh "sh kubectl-apply.sh && cd .."
+	sh "cd kubernetes && sh kubectl-apply.sh && cd .."
     }
 }
 
