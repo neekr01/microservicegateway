@@ -5,7 +5,7 @@ node {
 	git credentialsId: 'GIT_CREDENTIALS', url: 'https://github.com/neekr01/microservicegateway.git'
     }
 
-    stage("Maven Clean, Build, Docker Push for UI"){
+    stage("Maven Clean, Build, Docker Push"){
 
     sh "chmod +x mvnw && ./mvnw -ntp -Pprod verify jib:dockerBuild"
 
@@ -14,7 +14,7 @@ node {
 	
     }    
 
-    stage("Deploy"){
+    stage("Deployment on kubernetes"){
 	sh "gcloud container clusters get-credentials kube-cluster --zone us-central1-a --project payment-platform-204588"
 	sh "sh kubectl-apply.sh && cd .."
     }
